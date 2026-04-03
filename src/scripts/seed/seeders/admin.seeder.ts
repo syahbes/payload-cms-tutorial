@@ -1,5 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { isDuplicateError } from '../lib/is-duplicate-error'
+import { env } from '@/lib/env'
 
 export async function seedAdmin() {
   const payload = await getPayload({ config })
@@ -8,12 +10,16 @@ export async function seedAdmin() {
     const response = await payload.create({
       collection: 'users',
       data: {
-        email: 'admin@example.com',
-        password: 'admin',
+        email: env.CMS_SEED_ADMIN_EMAIL,
+        password: env.CMS_SEED_ADMIN_PASSWORD,
       },
     })
     console.log('Admin created:', response)
   } catch (error) {
-    console.error('Error creating admin:', JSON.stringify(error, null, 2))
+    if (isDuplicateError(error, 'email')) {
+      console.log('Admin user already exists')
+    } else {
+      console.error('Error creating admin:', JSON.stringify(error, null, 2))
+    }
   }
 }
