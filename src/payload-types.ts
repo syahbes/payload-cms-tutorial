@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     articles: Article;
+    'article-authors': ArticleAuthor;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'article-authors': ArticleAuthorsSelect<false> | ArticleAuthorsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -151,6 +153,7 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  blurDataUrl: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -186,6 +189,24 @@ export interface Article {
     };
     [k: string]: unknown;
   };
+  contentSummary: string;
+  readTimeInMins?: number | null;
+  coverImage: number | Media;
+  author: number | ArticleAuthor;
+  status?: ('Draft' | 'Published') | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-authors".
+ */
+export interface ArticleAuthor {
+  id: number;
+  name: string;
+  avatar: number | Media;
+  role: 'Staff Writer' | 'Guest Writer' | 'Contributor' | 'Editor';
   updatedAt: string;
   createdAt: string;
 }
@@ -224,6 +245,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'article-authors';
+        value: number | ArticleAuthor;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -295,6 +320,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  blurDataUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -315,6 +341,23 @@ export interface ArticlesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   content?: T;
+  contentSummary?: T;
+  readTimeInMins?: T;
+  coverImage?: T;
+  author?: T;
+  status?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-authors_select".
+ */
+export interface ArticleAuthorsSelect<T extends boolean = true> {
+  name?: T;
+  avatar?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
 }

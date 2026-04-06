@@ -1,6 +1,33 @@
 brew services start postgresql@18
 
 
+https://youtu.be/5Ei3wMPnKss?si=-6IeXAzBmsTQjpvk
+
+
+
+
+
+things I learned from this youtbe
+
+to add toolbar to text editor pass :
+
+```
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => {
+      return [...defaultFeatures, FixedToolbarFeature()]
+    },
+  }),
+```
+in the payload.config.ts file
+
+
+name of coloms in the config ts should be camelCase
+and in the db it will be converted to snake_case
+
+
+compute fields like 'read time' or 'full name' can be done using virtual fields
+
+https://payloadcms.com/docs/fields/overview#virtual-fields
 
 
 
