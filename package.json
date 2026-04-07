@@ -14,7 +14,8 @@
     "format": "prettier . --write",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "seed": "tsx -r dotenv/config src/scripts/seed/script.ts"
+    "seed": "tsx -r dotenv/config src/scripts/seed/script.ts",
+    "nuke": "psql -d payload_dev -c \"DROP SCHEMA public CASCADE; CREATE SCHEMA public;\" && pnpm payload migrate:fresh && pnpm seed"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.81.0",

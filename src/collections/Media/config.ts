@@ -33,7 +33,6 @@ export const Media: CollectionConfig = {
         if (!base64) return data
         // 3. set it to data.blurDataUrl field
         data.blurDataUrl = base64
-        console.log('Generated blur data URL for', data?.filename)
         // 4. return data
         return data
       },

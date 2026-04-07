@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { generateSlugHook } from './hooks/generate-slug.hook'
 import { generateContentSummaryHook } from './hooks/generate-content-summary.hook'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
+import { STATUS_OPTIONS } from './constants'
 
 // fields
 // - title
@@ -82,8 +83,8 @@ export const Articles: CollectionConfig = {
     {
       name: 'status',
       type: 'select',
-      options: ['Draft', 'Published'],
-      defaultValue: 'Draft',
+      options: Object.values(STATUS_OPTIONS),
+      defaultValue: STATUS_OPTIONS.DRAFT,
     },
     {
       name: 'publishedAt',
@@ -92,7 +93,7 @@ export const Articles: CollectionConfig = {
         date: {
           pickerAppearance: 'dayAndTime',
         },
-        condition: (data) => data?.status === 'Published',
+        condition: (data) => data?.status === STATUS_OPTIONS.PUBLISHED,
       },
     },
   ],
