@@ -4,3 +4,5 @@ export const STATUS_OPTIONS = {
   DRAFT: 'Draft',
   PUBLISHED: 'Published',
 } as const
+
+export const CACHE_TAGS_ARTICLES = 'articles'

@@ -1,13 +1,13 @@
 import { Media } from '@/payload-types'
 import { ArticleCard } from './_components/article-card'
-import { getArticles } from '@/collections/Articles/fetchers'
+import { getPublishedArticles } from '@/collections/Articles/fetchers'
 
 function relationIsObject<T>(relation: number | T): relation is T {
   return typeof relation !== 'number'
 }
 
 export default async function BlogIndexPage() {
-  const articles = await getArticles()
+  const articles = await getPublishedArticles()
 
   if (articles.length === 0) {
     return <div>No articles found</div>
