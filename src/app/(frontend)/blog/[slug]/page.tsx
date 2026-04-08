@@ -1,48 +1,53 @@
 import Image from 'next/image'
 import { ArticleMetadata } from '../_components/article-metadata'
+import { getArticleBySlug } from '@/collections/Articles/fetchers'
+import { notFound } from 'next/navigation'
+import { relationIsObject } from '@/lib/payload/helpers/relation-is-object'
+import { RichText } from '@/lib/payload/components/rich-text'
 
-const publishedAt = new Date('2025-11-13T20:45:00')
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = await getArticleBySlug(slug)
+  if (!article) notFound()
 
-export default async function BlogPostPage() {
+  if (!relationIsObject(article.coverImage)) return null
+  if (!relationIsObject(article.author) || !relationIsObject(article.author.avatar)) {
+    return null
+  }
+
   return (
     <div className="prose lg:prose-lg dark:prose-invert">
       {/* title */}
-      <h1>How to Create a Blog Tutorial No One Asked For</h1>
+      <h1>{article.title}</h1>
+
       {/* metadata */}
       <ArticleMetadata
         intent="post"
         data={{
           author: {
-            avatar: 'https://via.assets.so/img.jpg?w=40&h=40&bg=6b7280&f=png',
-            name: 'John Doe',
-            role: 'Staff Writer',
+            avatar: article.author.avatar,
+            name: article.author.name,
+            role: article.author.role,
           },
-          publishedAt,
-          readTimeMins: 42,
+          publishedAt: new Date(article.publishedAt ?? new Date()),
+          readTimeMins: article.readTimeInMins ?? 0,
         }}
         className="not-prose"
       />
 
       {/* cover image */}
       <Image
-        src="https://via.assets.so/img.jpg?w=600&h=300&bg=6b7280&f=png"
+        src={article.coverImage.url ?? ''}
         alt="Cover image"
         width={600}
         height={300}
         className="w-full rounded-md object-center object-cover"
+        placeholder="blur"
+        blurDataURL={article.coverImage.blurDataUrl}
       />
 
       {/* content */}
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis ab temporibus incidunt.
-        Similique quia alias quidem laudantium eos adipisci quo nam culpa, facere, quam neque animi
-        distinctio dolores, quas labore. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Debitis ab temporibus incidunt. Similique quia alias quidem laudantium eos adipisci quo nam
-        culpa, facere, quam neque animi distinctio dolores, quas labore. Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Debitis ab temporibus incidunt. Similique quia alias quidem
-        laudantium eos adipisci quo nam culpa, facere, quam neque animi distinctio dolores, quas
-        labore.
-      </p>
+      <RichText lexicalData={article.content} />
     </div>
   )
 }

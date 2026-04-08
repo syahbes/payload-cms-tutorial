@@ -5,4 +5,4 @@ export const STATUS_OPTIONS = {
   PUBLISHED: 'Published',
 } as const
 
-export const CACHE_TAGS_ARTICLES = 'articles'
+export const CACHE_TAG_ARTICLES = 'articles'

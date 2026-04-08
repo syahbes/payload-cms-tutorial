@@ -1,5 +1,5 @@
 import { getPayloadClient } from '@/lib/payload/client'
-import { CACHE_TAGS_ARTICLES, STATUS_OPTIONS } from './constants'
+import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from './constants'
 import { unstable_cache } from 'next/cache'
 
 async function _getPublishedArticles() {
@@ -7,11 +7,7 @@ async function _getPublishedArticles() {
   try {
     const { docs: articles } = await payload.find({
       collection: 'articles',
-      where: {
-        status: {
-          equals: STATUS_OPTIONS.PUBLISHED,
-        },
-      },
+      where: { status: { equals: STATUS_OPTIONS.PUBLISHED } },
       select: {
         slug: true,
         title: true,
@@ -25,16 +21,29 @@ async function _getPublishedArticles() {
     })
     return articles ?? []
   } catch (error) {
-    console.error('Error fetching articles:', error)
+    console.error('Failed to fetch articles', error)
     return []
   }
 }
 
-export async function getPublishedArticles() {
-  return unstable_cache(
-    _getPublishedArticles,
-    [],
-    { tags: [CACHE_TAGS_ARTICLES] },
-    // { revalidate: 3600 }, // 1 hour
-  )()
+export function getPublishedArticles() {
+  return unstable_cache(_getPublishedArticles, [], {
+    tags: [CACHE_TAG_ARTICLES],
+  })()
+}
+
+export async function getArticleBySlug(slug: string) {
+  const payload = await getPayloadClient()
+  try {
+    const { docs: articles } = await payload.find({
+      collection: 'articles',
+      limit: 1,
+      where: { slug: { equals: slug } },
+    })
+    const [firstArticle] = articles ?? []
+    return firstArticle ?? null
+  } catch (error) {
+    console.error('Failed to fetch articles', error)
+    return null
+  }
 }

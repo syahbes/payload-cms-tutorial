@@ -36,6 +36,8 @@ export function ArticleCard({
           width={600}
           height={300}
           className="h-[200px] object-cover object-center w-full"
+          placeholder="blur"
+          blurDataURL={coverImage.blurDataUrl}
         />
         {/* content */}
         <div className="p-3 flex-1 flex flex-col gap-5">

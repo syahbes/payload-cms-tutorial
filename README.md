@@ -29,6 +29,11 @@ and in the db it will be converted to snake_case
 
 compute fields like 'read time' or 'full name' can be done using virtual fields
 
+
+cache burst (next feature)
+but add it to after edit to update the cache
+
+
 https://payloadcms.com/docs/fields/overview#virtual-fields
 
 

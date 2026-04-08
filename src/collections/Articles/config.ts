@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { generateSlugHook } from './hooks/generate-slug.hook'
 import { generateContentSummaryHook } from './hooks/generate-content-summary.hook'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
-import { CACHE_TAGS_ARTICLES, STATUS_OPTIONS } from './constants'
+import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from './constants'
 import { revalidateTag } from 'next/cache'
 
 // fields
@@ -99,6 +99,6 @@ export const Articles: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [() => revalidateTag(CACHE_TAGS_ARTICLES, 'max')],
+    afterChange: [() => revalidateTag(CACHE_TAG_ARTICLES, 'max')],
   },
 }
