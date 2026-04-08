@@ -4,6 +4,8 @@ brew services start postgresql@18
 https://youtu.be/5Ei3wMPnKss?si=-6IeXAzBmsTQjpvk
 
 
+1:43
+
 
 
 
